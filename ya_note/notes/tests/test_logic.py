@@ -10,7 +10,7 @@ from .test_base import TestBaseClass
 class TestNoteCreation(TestBaseClass):
 
     def test_anonymous_user_cant_create_note(self):
-        """Анонимный пользователь не может создать заметку."""
+        """An anonymous user cannot create a note."""
         Note.objects.all().delete()
         expected_url = f'{self.login_page}?next={self.add_page}'
         response = self.client.post(self.add_page, data=self.form_data)
@@ -20,7 +20,7 @@ class TestNoteCreation(TestBaseClass):
         self.assertEqual(notes_count, 0)
 
     def test_user_can_create_note(self):
-        """Залогиненный пользователь может создать заметку."""
+        """A logged-in user can create a note."""
         Note.objects.all().delete()
         response = self.author_client.post(
             self.add_page, data=self.form_data

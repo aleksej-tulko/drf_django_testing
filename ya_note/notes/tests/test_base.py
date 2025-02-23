@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class TestBaseClass(TestCase):
-    """Базовый класс для фикстур."""
+    """Base class for fixtures."""
 
     @classmethod
     def setUpTestData(cls):

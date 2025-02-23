@@ -6,16 +6,16 @@ class TestListPage(TestBaseClass):
 
     def test_notes_on_list_page(self):
         """
-        Отдельная заметка передаётся на страницу со списком
-        заметок в списке object_list в словаре context.
+        A specific note is passed to the list page
+        inside the object_list in the context dictionary.
         """
         response = self.author_client.get(self.list_page)
         self.assertIn(self.note, response.context['object_list'])
 
     def test_notes_list_own_notes(self):
         """
-        В список заметок одного пользователя не попадают
-        заметки другого пользователя.
+        A user's notes list does not include notes
+        from another user.
         """
         users = (
             (self.author, self.author_client),
@@ -33,7 +33,7 @@ class TestListPage(TestBaseClass):
 class TestAddEditPage(TestBaseClass):
 
     def test_add_and_edit_forms(self):
-        """На страницы создания и редактирования заметки передаются формы."""
+        """Forms are passed to the note creation and editing pages."""
         urls = self.add_page, self.edit_page
         for name in urls:
             with self.subTest(user=self.author, name=name):
