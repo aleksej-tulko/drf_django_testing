@@ -1,52 +1,54 @@
-# Django testing  
-## Если вы успели выполнить все домашние задания — ваш финальный проект готов.
-Перенесите тесты из ваших проектов в данный репозиторий (**django_testing**), который появился в вашем аккаунте.  
-В итоге должна получиться следующая структура репозитория:
+# Django testing
+
+## Descriptions
+
+This project is to show how to test content, logic and routes of the Django application using Pytest and Unittest.
+
+## Requirements
+
+- **OS**: Linux
+- **Python 3.8**: to work with the project, you need to have Python version 3.8 or later installed. Download Python: [https://www.python.org/downloads/](https://www.python.org/downloads/)
+- **pip**: Python package manager. Download pip: [https://pip.pypa.io/en/stable/installation/](https://pip.pypa.io/en/stable/installation/)
+
+## Project launch
+The project includes two Django applications. To start them, it's needed to create working environment and install requirements:
+
+```bash
+git clone git@github.com:aleksej-tulko/drf_django_testing.git
+cd drf_django_testing
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
-Dev
- └── django_testing
-     ├── ya_news
-     │   ├── news
-     │   │   ├── fixtures/
-     │   │   ├── migrations/
-     │   │   ├── pytest_tests/   <- Директория с вашими тестами pytest для проекта ya_news
-     │   │   ├── __init__.py
-     │   │   ├── admin.py
-     │   │   ├── apps.py
-     │   │   ├── forms.py
-     │   │   ├── models.py
-     │   │   ├── urls.py
-     │   │   └── views.py
-     │   ├── templates/
-     │   ├── yanews/
-     │   ├── manage.py
-     │   └── pytest.ini
-     ├── ya_note
-     │   ├── notes
-     │   │   ├── migrations/
-     │   │   ├── tests/          <- Директория с вашими тестами unittest для проекта ya_note
-     │   │   ├── __init__.py
-     │   │   ├── admin.py
-     │   │   ├── apps.py
-     │   │   ├── forms.py
-     │   │   ├── models.py
-     │   │   ├── urls.py
-     │   │   └── views.py
-     │   ├── templates/
-     │   ├── yanote/
-     │   ├── manage.py
-     │   └── pytest.ini
-     ├── .gitignore
-     ├── README.md
-     ├── requirements.txt
-     └── structure_test.py
+### Unittest
+To test the project with Unittest, navigate to ya_note/ and start application:
+
+```bash
+cd ya_note/
+python3 manage.py migrate
+python3 manage.py runserver
 ```
 
-## После копирования тестов, написанных в ходе прохождения спринта, для проверки готовности проекта к сдаче необходимо выполнить 4 действия:
-1. Создать и активировать виртуальное окружение; установить зависимости из файла `requirements.txt`;
-2. Запустить скрипт для `run_tests.sh` из корневой директории проекта:
-```sh
-bash run_tests.sh
+Open new terminal and start tests:
+
+```bash
+python3 manage.py test
 ```
 
-**Если все проверки успешно выполнились, проект можно отправлять на ревью.**
+### Pytest
+To check Pytest, move to ya_news/ and start it:
+
+```bash
+cd ya_news/
+python3 manage.py migrate
+python3 manage.py runserver
+```
+
+Just run this in the new terminal:
+
+```bash
+pytest
+```
+
+## Author
+[Aliaksei Tulko](https://github.com/aleksej-tulko)
