@@ -9,16 +9,11 @@ from .models import Comment, News
 
 
 class NewsList(generic.ListView):
-    """Список новостей."""
+    """List of news."""
     model = News
     template_name = 'news/home.html'
 
     def get_queryset(self):
-        """
-        Выводим только несколько последних новостей.
-
-        Их количество определяется в настройках проекта.
-        """
         return self.model.objects.prefetch_related(
             'comment_set'
         )[:settings.NEWS_COUNT_ON_HOME_PAGE]
@@ -79,7 +74,7 @@ class NewsDetailView(generic.View):
 
 
 class CommentBase(LoginRequiredMixin):
-    """Базовый класс для работы с комментариями."""
+    """Base class for comments."""
     model = Comment
 
     def get_success_url(self):
@@ -89,16 +84,15 @@ class CommentBase(LoginRequiredMixin):
         ) + '#comments'
 
     def get_queryset(self):
-        """Пользователь может работать только со своими комментариями."""
         return self.model.objects.filter(author=self.request.user)
 
 
 class CommentUpdate(CommentBase, generic.UpdateView):
-    """Редактирование комментария."""
+    """Edit commentary."""
     template_name = 'news/edit.html'
     form_class = CommentForm
 
 
 class CommentDelete(CommentBase, generic.DeleteView):
-    """Удаление комментария."""
+    """Delete commentary."""
     template_name = 'news/delete.html'
