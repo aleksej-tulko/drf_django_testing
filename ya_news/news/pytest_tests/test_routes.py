@@ -26,19 +26,18 @@ def test_pages_avialability_for_anon_and_auth_users(
         name, client, status
 ):
     """
-    Главная страница доступна анонимному пользователю.
+    The homepage is accessible to anonymous users.
 
-    Страницы регистрации пользователей, входа в учётную
-    запись и выхода из неё доступны анонимным пользователям.
+    User registration, login, and logout pages are accessible
+    to anonymous users.
 
-    Страница отдельной новости доступна анонимному пользователю
+    The news detail page is accessible to anonymous users.
 
-    Страницы удаления и редактирования комментария
-    доступны автору комментария.
+    Comment deletion and editing pages are accessible
+    only to the comment author.
 
-    Авторизованный пользователь не может зайти на страницы
-    редактирования или удаления чужих комментариев
-    (возвращается ошибка 404).
+    An authenticated user cannot access the edit or delete
+    pages of someone else's comment (returns a 404 error).
     """
     response = client.get(name)
     assert response.status_code == status
@@ -53,9 +52,9 @@ def test_pages_avialability_for_anon_and_auth_users(
 def test_redirect_availability_for_anonymous_users(
     name, login_page, client
 ):
-    """При попытке перейти на страницу редактирования или удаления
-    комментария анонимный пользователь перенаправляется
-    на страницу авторизации.
+    """
+    When an anonymous user attempts to access the edit or delete
+    comment page, they are redirected to the login page.
     """
     response = client.get(name)
     expected_url = f'{login_page}?next={name}'

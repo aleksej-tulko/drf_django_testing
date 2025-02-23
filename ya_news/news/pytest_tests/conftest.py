@@ -9,7 +9,7 @@ from django.utils import timezone
 from news.models import Comment, News
 
 
-TEXT = 'Текст'
+TEXT = 'Random text'
 
 
 @pytest.fixture
@@ -49,19 +49,19 @@ def delete_page(comment_item):
 
 @pytest.fixture
 def author(django_user_model):
-    """Автор."""
-    return django_user_model.objects.create(username='Автор')
+    """Object author."""
+    return django_user_model.objects.create(username='Author')
 
 
 @pytest.fixture
 def not_author(django_user_model):
-    """Зарегистрированный юзер."""
-    return django_user_model.objects.create(username='Не автор')
+    """Registered user."""
+    return django_user_model.objects.create(username='Aleix')
 
 
 @pytest.fixture
 def author_client(author):
-    """Клиент автора."""
+    """Author client."""
     client = Client()
     client.force_login(author)
     return client
@@ -69,7 +69,7 @@ def author_client(author):
 
 @pytest.fixture
 def not_author_client(not_author):
-    """Клиент зарегистрированного юзера."""
+    """Registered user client."""
     client = Client()
     client.force_login(not_author)
     return client
@@ -77,7 +77,7 @@ def not_author_client(not_author):
 
 @pytest.fixture
 def news():
-    """Генерация новостей."""
+    """News generation."""
     today = datetime.today()
     News.objects.bulk_create(
         News(title=f'{TEXT}-{index}',
@@ -89,13 +89,13 @@ def news():
 
 @pytest.fixture
 def news_item(news):
-    """Отдельно взятая новость."""
+    """Random post."""
     return News.objects.get(id=1)
 
 
 @pytest.fixture
 def comments(author, news_item):
-    """Генерация комментов на отдельно взятой новости."""
+    """Commentaries generation."""
     for index in range(settings.COMMENTS_COUNT_ON_NEWS_PAGE):
         comments = Comment.objects.create(
             text=TEXT,
@@ -108,5 +108,5 @@ def comments(author, news_item):
 
 @pytest.fixture
 def comment_item(comments, news_item):
-    """Отдельно взятый коммент."""
+    """Single commentary."""
     return Comment.objects.filter(news_id=news_item).first()

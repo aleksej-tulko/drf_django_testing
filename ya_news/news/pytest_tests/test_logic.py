@@ -9,13 +9,13 @@ from news.models import Comment
 
 pytestmark = pytest.mark.django_db
 
-FORM_DATA = {'text': 'Новый текcт'}
+FORM_DATA = {'text': 'New text'}
 
 
 def test_anonymous_user_cant_create_comment(
     client, detail_page, login_page
 ):
-    """Анонимный пользователь не может отправить комментарий."""
+    """An anonymous user cannot submit a comment."""
     comments_count_before_test = Comment.objects.count()
     response = client.post(detail_page, data=FORM_DATA)
     expected_url = f'{login_page}?next={detail_page}'
@@ -26,7 +26,7 @@ def test_anonymous_user_cant_create_comment(
 def test_authorised_user_can_create_comment(
     author_client, detail_page, author, news_item
 ):
-    """Авторизованный пользователь может отправить комментарий."""
+    """An authenticated user can submit a comment."""
     Comment.objects.all().delete()
     comments_count_before_test = Comment.objects.count()
     author_client.post(detail_page, data=FORM_DATA)
@@ -39,8 +39,8 @@ def test_authorised_user_can_create_comment(
 
 def test_user_behave(author_client, detail_page):
     """
-    Если комментарий содержит запрещённые слова,
-    он не будет опубликован, а форма вернёт ошибку.
+    If a comment contains prohibited words,
+    it will not be published, and the form will return an error.
     """
     FORM_DATA['text'] = f'Автор поста {BAD_WORDS[0]}'
     Comment.objects.all().delete()
@@ -52,7 +52,7 @@ def test_user_behave(author_client, detail_page):
 def test_authorised_user_can_edit_own_comment(
     author_client, edit_page, comment_item
 ):
-    """Авторизованный пользователь может редактировать свои комментарии."""
+    """An authenticated user can edit their own comments."""
     FORM_DATA['text'] = NEW_COMMENT
     author_client.post(edit_page, data=FORM_DATA)
     updated_comment = Comment.objects.get(id=comment_item.id)
@@ -64,7 +64,7 @@ def test_authorised_user_can_edit_own_comment(
 def test_other_user_cant_edit_other_user_comment(
     not_author_client, edit_page, comment_item
 ):
-    """Авторизованный пользователь не может редактировать чужие комментарии."""
+    """An authenticated user cannot edit someone else's comments."""
     FORM_DATA['text'] = NEW_COMMENT
     response = not_author_client.post(edit_page, data=FORM_DATA)
     comment_from_db = Comment.objects.get(id=comment_item.id)
@@ -77,7 +77,7 @@ def test_other_user_cant_edit_other_user_comment(
 def test_author_can_delete_comment(
     author_client, delete_page, comment_item
 ):
-    """Авторизованный пользователь может удалять свои комментарии."""
+    """An authenticated user can delete their own comments."""
     comments_count_before_test = Comment.objects.count()
     author_client.post(delete_page)
     assert not Comment.objects.filter(id=comment_item.id).exists()
@@ -87,7 +87,7 @@ def test_author_can_delete_comment(
 def test_other_user_cant_delete_other_user_comment(
     not_author_client, delete_page
 ):
-    """Авторизованный пользователь не может удалять чужие комментарии."""
+    """An authenticated user cannot delete someone else's comments."""
     comments_count_before_test = Comment.objects.count()
     response = not_author_client.post(delete_page)
     assert response.status_code == HTTPStatus.NOT_FOUND

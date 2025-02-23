@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_home_page_contains_10_news_max(client, news, home_page):
-    """Количество новостей на главной странице."""
+    """Test pagination."""
     response = client.get(home_page)
     assert response.context['object_list'].count() == (
         settings.NEWS_COUNT_ON_HOME_PAGE
@@ -16,10 +16,7 @@ def test_home_page_contains_10_news_max(client, news, home_page):
 
 
 def test_home_page_news_sorted(client, home_page):
-    """
-    Новости отсортированы от самой свежей к самой старой.
-    Свежие новости в начале списка.
-    """
+    """Test news sorting from new to old."""
     response = client.get(home_page)
     all_dates = [news.date for news in response.context['object_list']]
     sorted_dates = sorted(all_dates, reverse=True)
@@ -27,10 +24,7 @@ def test_home_page_news_sorted(client, home_page):
 
 
 def test_detail_page_comments_sorted(client, detail_page):
-    """
-    Комментарии на странице отдельной новости отсортированы в
-    хронологическом порядке: старые в начале списка, новые — в конце.
-    """
+    """Test commentaries sorting in chronological order."""
     response = client.get(detail_page)
     news = response.context['news']
     all_comments = news.comment_set.all()
@@ -43,8 +37,8 @@ def test_detail_page_contains_comment_form(
     author_client, detail_page
 ):
     """
-    Авторизованному пользователю доступна форма для отправки
-    омментария на странице отдельной новости.
+    An authenticated user has access to the comment form
+    on the news detail page.
     """
     response = author_client.get(detail_page)
     assert 'form' in response.context
@@ -53,8 +47,8 @@ def test_detail_page_contains_comment_form(
 
 def test_anonymous_client_has_no_form(client, detail_page):
     """
-    Анонимному пользователю недоступна форма для отправки
-    комментария на странице отдельной новости.
+    An anonymous user does not have access to the comment form
+    on the news detail page.
     """
     response = client.get(detail_page)
     assert 'form' not in response.context
