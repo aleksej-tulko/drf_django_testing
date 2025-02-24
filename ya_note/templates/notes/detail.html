@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Заметка ID: {{ note.id }}</h2>
+  <h2>Note ID: {{ note.id }}</h2>
   <hr>
   <h3>{{ note.title }}</h3>
   <p>{{ note.text }}</p>
   <hr>
   <p>
-    <a href="{% url 'notes:edit' slug=note.slug %}">Редактировать</a>
+    <a href="{% url 'notes:edit' slug=note.slug %}">Edit</a>
   </p>
   <p>
-    <a href="{% url 'notes:delete' slug=note.slug %}">Удалить</a>
+    <a href="{% url 'notes:delete' slug=note.slug %}">Delete</a>
   </p>
 {% endblock content %}

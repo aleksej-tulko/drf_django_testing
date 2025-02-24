@@ -7,8 +7,8 @@ class TestRoutes(TestBaseClass):
 
     def test_pages_availability(self):
         """
-        Главная страница, регистрация, логин, логаут
-        доступны анонимным юзерам.
+        The home page, registration, login, and logout
+        are accessible to anonymous users.
         """
         urls = self.users_pages + (self.home_page,)
         for name in urls:
@@ -18,9 +18,10 @@ class TestRoutes(TestBaseClass):
 
     def test_availability_for_edit_detail_and_delete(self):
         """
-        Страницы отдельной заметки, удаления и редактирования заметки
-        доступны только автору заметки. Если на эти страницы попытается
-        зайти другой пользователь — вернётся ошибка 404.
+        The individual note page, delete page, and edit page
+        are only accessible to the note's author.
+        If another user tries to access these pages,
+        a 404 error is returned.
         """
         users_statuses = (
             (self.author, self.author_client, HTTPStatus.OK),
@@ -35,9 +36,9 @@ class TestRoutes(TestBaseClass):
 
     def test_availability_for_auth_users(self):
         """
-        Аутентифицированному пользователю доступна страница
-        со списком заметок notes/, страница успешного добавления
-        заметки done/, страница добавления новой заметки add/.
+        An authenticated user can access the notes list page (notes/),
+        the success page after adding a note (done/),
+        and the new note creation page (add/).
         """
         urls = self.add_page, self.list_page, self.success_page
         users = (
@@ -52,10 +53,10 @@ class TestRoutes(TestBaseClass):
 
     def test_redirect_for_anonymous_client(self):
         """
-        При попытке перейти на страницу списка заметок, страницу
-        успешного добавления записи, страницу добавления заметки,
-        отдельной заметки, редактирования или удаления заметки
-        анонимный пользователь перенаправляется на страницу логина.
+        If an anonymous user attempts to access the notes list page,
+        the success page after adding a note, the add note page,
+        the individual note page, the edit page, or the delete page,
+        they are redirected to the login page.
         """
         urls = self.add_page, self.list_page, self.success_page,
         self.edit_page, self.details_page, self.delete_page

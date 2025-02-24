@@ -35,7 +35,7 @@ class TestNoteCreation(TestBaseClass):
         self.assertEqual(new_note.author, self.note.author)
 
     def test_not_unique_slug(self):
-        """Невозможно создать две заметки с одинаковым slug."""
+        """It is impossible to create two notes with the same slug."""
         notes_count = Note.objects.count()
         self.form_data['slug'] = self.note.slug
         response = self.author_client.post(
@@ -47,8 +47,8 @@ class TestNoteCreation(TestBaseClass):
 
     def test_slug_not_empty(self):
         """
-        Если при создании заметки не заполнен slug,
-        то он формируется автоматически.
+        If the slug is not provided when creating a note,
+        it is generated automatically.
         """
         Note.objects.all().delete()
         expected_slug = slugify(self.form_data['title'])
@@ -65,11 +65,7 @@ class TestNoteCreation(TestBaseClass):
 class TestNoteEditDelete(TestBaseClass):
 
     def test_author_can_delete_note(self):
-        """Для ревьювера: по-моему, вполне норм
-        вначале получить кол-во записей, и полскольку удаляем одну новость,
-        от этого же кол-ва  можно  просто отнять единицу
-        и сравнить с тем, сколько лежит в бд в конце теста.
-        """
+        """Test author can delete their own notes."""
         notes_count = Note.objects.count()
         response = self.author_client.delete(self.delete_page)
         self.assertRedirects(response, self.success_page,
@@ -77,14 +73,14 @@ class TestNoteEditDelete(TestBaseClass):
         self.assertEqual(notes_count - 1, Note.objects.count())
 
     def test_user_cant_delete_note_of_another_user(self):
-        """Пользователь не может удалять чужие заметки."""
+        """A user cannot delete someone else's note."""
         notes_count = Note.objects.count()
         response = self.anon_client.delete(self.delete_page)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         self.assertEqual(notes_count, Note.objects.count())
 
     def test_author_can_edit_note(self):
-        """Пользователь может редактировать свои заметки."""
+        """A user can edit their own notes."""
         response = self.author_client.post(
             self.edit_page, data=self.new_form_data
         )
@@ -96,7 +92,7 @@ class TestNoteEditDelete(TestBaseClass):
         self.assertEqual(note_from_db.author, self.note.author)
 
     def test_user_cant_edit_note_of_another_user(self):
-        """Пользователь не может редактировать чужие заметки."""
+        """A user cannot edit someone else's note."""
         response = self.anon_client.post(
             self.edit_page, data=self.new_form_data
         )
